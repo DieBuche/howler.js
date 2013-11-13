@@ -162,6 +162,10 @@ The following methods are used to modify all sounds globally, and are called fro
   * *x*: `Number` The x-velocity of the listener.
   * *y*: `Number` The y-velocity of the listener.
   * *z*: `Number` The z-velocity of the listener.
+* **dopplerFactor**: Get/set the Doppler factor. **This only works with Web Audio API.**
+  * *factor*: `Number` The Doppler factor.
+* **speedOfSound**: Get/set the speed of sound. **This only works with Web Audio API.**
+  * *speed*: `Number` The speed of sound.
 * **codecs**: Check supported audio codecs.
   * *ext*: `String` File extension. One of: "mp3", "opus", "ogg", "wav", "aac", "m4a", "mp4", "weba".
 
@@ -171,6 +175,7 @@ By default, audio on iOS is locked until a sound is played within a user interac
 ```javascript
 Howler.iOSAutoEnable = false;
 ```
+  * *speed*: `Number` The speed of sound.
 
 ## License
 

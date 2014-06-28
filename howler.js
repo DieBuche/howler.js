@@ -69,7 +69,7 @@
       // make sure volume is a number
       vol = parseFloat(vol);
 
-      if (vol >= 0 && vol <= 1) {
+      if (vol >= 0) {
         self._volume = vol;
 
         if (usingWebAudio) {
@@ -341,6 +341,7 @@
     self._volume = o.volume !== undefined ? o.volume : 1;
     self._urls = o.urls || [];
     self._rate = o.rate || 1;
+    self._distanceModel = o.distanceModel || 'inverse';
 
     // allow forcing of a specific panningModel ('equalpower' or 'HRTF'),
     // if none is specified, defaults to 'equalpower' and switches to 'HRTF'
@@ -1024,11 +1025,10 @@
 
       if (refDistance >= 0 || refDistance < 0) {
         if (self._webAudio) {
-          var activeNode = (id) ? self._nodeById(id) : self._activeNode();
-          if (activeNode) {
-            self._refDistance = refDistance;
-            activeNode.panner.refDistance = refDistance;
-          }
+          self._audioNode.forEach(function (node) {
+            node.panner.refDistance = refDistance;
+          });
+          self._refDistance = refDistance;
         }
       } else {
         return self._refDistance;
@@ -1094,11 +1094,10 @@
 
       if (rolloffFactor >= 0 || rolloffFactor < 0) {
         if (self._webAudio) {
-          var activeNode = (id) ? self._nodeById(id) : self._activeNode();
-          if (activeNode) {
-            self._rolloffFactor = rolloffFactor;
-            activeNode.panner.rolloffFactor = rolloffFactor;
-          }
+          self._audioNode.forEach(function (node) {
+            node.panner.rolloffFactor = rolloffFactor;
+          });
+          self._rolloffFactor = rolloffFactor;
         }
       } else {
         return self._rolloffFactor;
@@ -1348,6 +1347,7 @@
       node[index].panner.setPosition(self._position[0], self._position[1], self._position[2]);
       node[index].panner.setVelocity(self._velocity[0], self._velocity[1], self._velocity[2]);
       node[index].panner.refDistance = self._refDistance;
+      node[index].panner.distanceModel = self._distanceModel;
       node[index].panner.maxDistance = self._maxDistance;
       node[index].panner.rolloffFactor = self._rolloffFactor;
       node[index].panner.connect(node[index]);
